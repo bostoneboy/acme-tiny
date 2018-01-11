@@ -110,9 +110,10 @@ def get_crt(account_key, csr, acme_dir, log=LOGGER, CA=DEFAULT_CA):
         wellknown_path = os.path.join(acme_dir, token)
         with open(wellknown_path, "w") as wellknown_file:
             wellknown_file.write(keyauthorization)
+            os.system("cd /srv/blog.pagebrin/.deploy_git;git add .;git commit -m 'add acme verification file';git push -u git@github.com:bostoneboy/blog.git  --force")
 
         # check that the file is in place
-        wellknown_url = "http://{0}/.well-known/acme-challenge/{1}".format(domain, token)
+        wellknown_url = "http://{0}/well-known/acme-challenge/{1}".format(domain, token)
         try:
             resp = urlopen(wellknown_url)
             resp_data = resp.read().decode('utf8').strip()
